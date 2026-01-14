@@ -1,0 +1,7 @@
+# backend/.gitignore
+__pycache__/
+*.pyc
+.env
+serviceAccountKey.json
+venv/
+.DS_Store

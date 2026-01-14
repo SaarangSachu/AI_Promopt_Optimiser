@@ -1,0 +1,20 @@
+# Ignore Mac/Windows system files
+.DS_Store
+Thumbs.db
+
+# Ignore Environment Variables (Secrets)
+.env
+.env.local
+
+# Ignore Python specific
+__pycache__/
+*.py[cod]
+venv/
+backend/venv/
+backend/serviceAccountKey.json  <-- VERY IMPORTANT
+
+# Ignore Node.js specific (Too heavy)
+node_modules/
+npm-debug.log
+dist/
+.expo/
