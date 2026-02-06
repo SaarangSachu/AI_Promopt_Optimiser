@@ -1,10 +1,10 @@
-import google.generativeai as genai
-import os
+from google import genai
+from google.genai import types
 
 
 def optimize_with_gemini(draft_prompt, api_key):
     """
-    Sends the draft prompt to Google Gemini for polishing using the Standard SDK.
+    Sends the draft prompt to Google Gemini for polishing using the new SDK.
     """
     # Check if key is missing or is the placeholder text
     if not api_key or "YOUR_" in api_key:
@@ -12,9 +12,9 @@ def optimize_with_gemini(draft_prompt, api_key):
         return draft_prompt
 
     try:
-        # --- STANDARD SDK SETUP ---
-        # Configure the global library with your API key
-        genai.configure(api_key=api_key)
+        # --- NEW SDK SETUP ---
+        # Initialize the client with your API key
+        client = genai.Client(api_key=api_key)
 
         instruction = (
             "You are an expert Prompt Engineer. Your goal is to rewrite the following draft prompt "
@@ -25,12 +25,13 @@ def optimize_with_gemini(draft_prompt, api_key):
         )
 
         # --- GENERATE CONTENT ---
-        # Initialize the model (using the stable 1.5-flash model)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Using gemini-2.5-flash as identified in your dashboard
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=instruction
+        )
 
-        response = model.generate_content(instruction)
-
-        # Accessing text in the Standard SDK
+        # Accessing text in the new SDK
         if response.text:
             return response.text
         else:
