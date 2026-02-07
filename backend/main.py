@@ -11,6 +11,8 @@ from sentence_transformers import SentenceTransformer
 from questions_logic import get_questions_for_category
 from scoring_logic import calculate_category_scores
 from optimization_logic import optimize_with_gemini
+from gemini_questions import generate_questions_with_gemini
+
 
 # --- 1. SECURITY CONFIGURATION ---
 # Load environment variables from .env file
@@ -46,7 +48,7 @@ print("AI Model Loaded!")
 app.add_middleware(
     CORSMiddleware,
     # In production, replace with specific domain e.g., ["http://localhost:5173"]
-    allow_origins=["*"],
+    allow_origins=os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -63,7 +65,8 @@ CATEGORIES = {
     "cooking": {"anchor": "Cooking recipe, ingredients, meal prep, cuisine.", "keywords": ["cook", "recipe", "food", "dinner"]},
     "travel": {"anchor": "Plan travel itinerary, vacation, hotels, budget.", "keywords": ["travel", "trip", "vacation", "hotel"]},
     "design": {"anchor": "Visual art, logo design, user interface, figma.", "keywords": ["design", "logo", "ui", "ux"]},
-    "emotional": {"anchor": "Personal advice, relationship conflict, stress, life coaching.", "keywords": ["sad", "stress", "relationship", "lonely", "help"]}
+    "emotional": {"anchor": "Personal advice, relationship conflict, stress, life coaching.", "keywords": ["sad", "stress", "relationship", "lonely", "help"]},
+    "general": {"anchor": "General inquiry, miscellaneous, random topic.", "keywords": ["general", "help", "misc"]}
 }
 
 # --- 6. MEMORY SYSTEM ---
@@ -113,6 +116,11 @@ class FeedbackRequest(BaseModel):
     category_id: str
     rating: int
 
+class QuestionGenRequest(BaseModel):
+    text: str
+    category_id: str
+
+
 # --- ENDPOINTS ---
 
 
@@ -136,7 +144,13 @@ async def analyze_prompt(request: AnalysisRequest):
         elif "muscle" in user_text:
             prefills["goal"] = "Muscle Gain"
 
-    dynamic_questions = get_questions_for_category(best_category, user_text)
+    
+    # Try Dynamic Generation with Fallback
+    try:
+        dynamic_questions = generate_questions_with_gemini(GEMINI_API_KEY, best_category, user_text)
+    except Exception as e:
+        print(f"⚠️ Dynamic Generation Failed, using fallback: {e}")
+        dynamic_questions = get_questions_for_category(best_category, user_text)
 
     return {
         "category_id": best_category,
@@ -144,6 +158,18 @@ async def analyze_prompt(request: AnalysisRequest):
         "questions": dynamic_questions,
         "prefilled_answers": prefills
     }
+
+
+@app.post("/generate_questions")
+async def generate_questions_endpoint(request: QuestionGenRequest):
+    try:
+        questions = generate_questions_with_gemini(GEMINI_API_KEY, request.category_id, request.text)
+        return {"questions": questions}
+    except Exception as e:
+        print(f"⚠️ Dynamic Generation Failed (Endpoint), using fallback: {e}")
+        # Global fallback logic if specific category logic fails or just raw text
+        questions = get_questions_for_category(request.category_id, request.text)
+        return {"questions": questions}
 
 
 @app.post("/optimize")
@@ -156,16 +182,26 @@ async def optimize_endpoint(request: OptimizeRequest):
 @app.post("/feedback")
 async def feedback_endpoint(request: FeedbackRequest):
     try:
+        # Validate Category ID to prevent crashes
+        category = request.category_id
+        if category not in learned_memory:
+            # Fallback to general or log warning
+            if "general" in learned_memory:
+                category = "general"
+            else:
+                # Extreme fallback if even general is missing (unlikely)
+                return {"status": "error", "message": "Invalid category ID"}
+
         if request.rating == 1:
-            if request.text not in learned_memory[request.category_id]:
-                learned_memory[request.category_id].append(request.text)
+            if request.text not in learned_memory[category]:
+                learned_memory[category].append(request.text)
                 db.collection('ai_memory').add(
-                    {'text': request.text, 'category_id': request.category_id, 'timestamp': firestore.SERVER_TIMESTAMP})
+                    {'text': request.text, 'category_id': category, 'timestamp': firestore.SERVER_TIMESTAMP})
         else:
-            if request.text not in negative_memory[request.category_id]:
-                negative_memory[request.category_id].append(request.text)
+            if request.text not in negative_memory[category]:
+                negative_memory[category].append(request.text)
                 db.collection('ai_memory_negative').add(
-                    {'text': request.text, 'category_id': request.category_id, 'timestamp': firestore.SERVER_TIMESTAMP})
+                    {'text': request.text, 'category_id': category, 'timestamp': firestore.SERVER_TIMESTAMP})
         return {"status": "success"}
     except Exception as e:
         return {"status": "error", "message": str(e)}

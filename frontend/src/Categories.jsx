@@ -31,7 +31,7 @@ export const CATEGORIES = {
         persona: "Senior Software Architect",
         icon: <Code className="w-8 h-8 text-white" />,
         color: 'bg-blue-600',
-        defaults: [],
+        defaults: [{ id: "language", label: "Language/Stack", placeholder: "Python, React, etc.", reason: "Context" }],
         generate: (initial, answers) => buildPrompt(
             "Senior Software Architect",
             initial,
@@ -45,7 +45,7 @@ export const CATEGORIES = {
         persona: "Lead Data Scientist",
         icon: <BarChart className="w-8 h-8 text-white" />,
         color: 'bg-cyan-600',
-        defaults: [],
+        defaults: [{ id: "goal", label: "Analysis Goal", placeholder: "Forecast, Trends, etc.", reason: "Outcome" }],
         generate: (initial, answers) => buildPrompt(
             "Lead Data Scientist",
             initial,
@@ -59,7 +59,7 @@ export const CATEGORIES = {
         persona: "Elite Personal Trainer (CSCS)",
         icon: <Dumbbell className="w-8 h-8 text-white" />,
         color: 'bg-orange-500',
-        defaults: [],
+        defaults: [{ id: "goal", label: "Fitness Goal", placeholder: "Weight loss, Strength", reason: "Focus" }],
         generate: (initial, answers) => buildPrompt(
             "Elite Personal Trainer",
             initial,
@@ -73,7 +73,7 @@ export const CATEGORIES = {
         persona: "Michelin Star Chef",
         icon: <Utensils className="w-8 h-8 text-white" />,
         color: 'bg-red-500',
-        defaults: [],
+        defaults: [{ id: "diet", label: "Dietary Restrictions", placeholder: "Vegan, Gluten-free", reason: "Safety" }],
         generate: (initial, answers) => buildPrompt(
             "Michelin Star Chef",
             initial,
@@ -87,7 +87,7 @@ export const CATEGORIES = {
         persona: "Empathetic Psychologist",
         icon: <Heart className="w-8 h-8 text-white" />,
         color: 'bg-pink-600',
-        defaults: [],
+        defaults: [{ id: "feeling", label: "Current Emotion", placeholder: "Anxious, Sad, etc.", reason: "Empathy" }],
         generate: (initial, answers) => buildPrompt(
             "Compassionate Psychologist",
             initial,
@@ -101,7 +101,7 @@ export const CATEGORIES = {
         persona: "University Professor",
         icon: <GraduationCap className="w-8 h-8 text-white" />,
         color: 'bg-indigo-700',
-        defaults: [],
+        defaults: [{ id: "level", label: "Academic Level", placeholder: "Undergrad, PhD", reason: "Depth" }],
         generate: (initial, answers) => buildPrompt(
             "Distinguished Professor",
             initial,
@@ -115,7 +115,7 @@ export const CATEGORIES = {
         persona: "Best-Selling Author",
         icon: <BookOpen className="w-8 h-8 text-white" />,
         color: 'bg-purple-600',
-        defaults: [],
+        defaults: [{ id: "genre", label: "Genre/Style", placeholder: "Sci-Fi, Poetry", reason: "Tone" }],
         generate: (initial, answers) => buildPrompt(
             "Best-Selling Novelist",
             initial,
@@ -129,7 +129,7 @@ export const CATEGORIES = {
         persona: "Chief Marketing Officer",
         icon: <ShoppingBag className="w-8 h-8 text-white" />,
         color: 'bg-green-600',
-        defaults: [],
+        defaults: [{ id: "target_audience", label: "Target Audience", placeholder: "Gen Z, Professionals", reason: "Messaging" }],
         generate: (initial, answers) => buildPrompt(
             "Chief Marketing Officer",
             initial,
@@ -143,7 +143,7 @@ export const CATEGORIES = {
         persona: "Luxury Travel Concierge",
         icon: <Plane className="w-8 h-8 text-white" />,
         color: 'bg-sky-500',
-        defaults: [],
+        defaults: [{ id: "destination", label: "Destination/Vibe", placeholder: "Paris, Beach", reason: "Logistics" }],
         generate: (initial, answers) => buildPrompt(
             "Luxury Travel Concierge",
             initial,
@@ -157,7 +157,7 @@ export const CATEGORIES = {
         persona: "Creative Director",
         icon: <PenTool className="w-8 h-8 text-white" />,
         color: 'bg-fuchsia-600',
-        defaults: [],
+        defaults: [{ id: "style", label: "Visual Style", placeholder: "Minimalist, Retro", reason: "Aesthetics" }],
         generate: (initial, answers) => buildPrompt(
             "Creative Director",
             initial,
@@ -171,7 +171,7 @@ export const CATEGORIES = {
         persona: "Helpful Expert",
         icon: <Sparkles className="w-8 h-8 text-white" />,
         color: 'bg-slate-600',
-        defaults: [],
+        defaults: [{ id: "details", label: "Specific Details", placeholder: "Any constraints?", reason: "Clarity" }],
         generate: (initial, answers) => buildPrompt(
             "Helpful Expert",
             initial,

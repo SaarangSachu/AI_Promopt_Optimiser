@@ -239,7 +239,5 @@ def get_questions_for_category(category_id, user_text):
         return QUESTION_BANK["cooking"]["default"]
 
     # --- GLOBAL FALLBACK ---
-    return [
-        {"id": "details", "label": "Specific Details?",
-            "placeholder": "Add any requirements...", "reason": "Refines the result."}
-    ]
+    # Return empty to let Frontend defaults take over (Categories.jsx)
+    return []
