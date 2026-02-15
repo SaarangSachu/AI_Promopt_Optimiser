@@ -12,8 +12,14 @@ const ResultScreen = ({ prompt, initialPrompt, categoryLabel, onReset, currentUs
 
     const handleCopy = () => { navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-    const openChatGPT = () => window.open(`https://chat.openai.com/?model=gpt-4`, '_blank');
-    const openGemini = () => window.open(`https://gemini.google.com/app`, '_blank');
+    const openChatGPT = () => {
+        navigator.clipboard.writeText(prompt);
+        window.open(`https://chat.openai.com/?model=gpt-4`, '_blank');
+    };
+    const openGemini = () => {
+        navigator.clipboard.writeText(prompt);
+        window.open(`https://gemini.google.com/app`, '_blank');
+    };
 
     const [showNotification, setShowNotification] = useState(false);
 
