@@ -5,7 +5,7 @@ def optimize_with_gemini(draft_prompt, api_key):
     Sends the draft prompt to Google Gemini for polishing using the standardized SDK.
     """
     if not api_key:
-        print("⚠️ No valid API Key provided. Returning draft.")
+        print("No valid API Key provided. Returning draft.")
         return draft_prompt
 
     try:
@@ -29,8 +29,8 @@ def optimize_with_gemini(draft_prompt, api_key):
             return draft_prompt
 
     except ValueError as ve:
-        print(f"⚠️ Gemini Safety Filter triggered or Empty Response: {ve}")
+        print(f"Gemini Safety Filter triggered or Empty Response: {ve}")
         return draft_prompt
     except Exception as e:
-        print(f"❌ Gemini API Error: {e}")
+        print(f"Gemini API Error: {e}")
         return draft_prompt

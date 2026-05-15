@@ -25,11 +25,11 @@ CREDENTIALS_PATH = os.getenv(
 
 # Security Checks
 if not GEMINI_API_KEY:
-    raise ValueError("❌ CRITICAL: GEMINI_API_KEY is missing from .env file!")
+    raise ValueError("CRITICAL: GEMINI_API_KEY is missing from .env file!")
 
 if not os.path.exists(CREDENTIALS_PATH):
     raise FileNotFoundError(
-        f"❌ CRITICAL: Service Account Key not found at: {CREDENTIALS_PATH}")
+        f"CRITICAL: Service Account Key not found at: {CREDENTIALS_PATH}")
 
 app = FastAPI()
 
@@ -76,7 +76,7 @@ negative_memory = {key: [] for key in CATEGORIES.keys()}
 
 def load_memories():
     global learned_memory, negative_memory
-    print("☁️ Downloading Memories...")
+    print("Downloading Memories...")
     try:
         # Positive
         docs = db.collection('ai_memory').stream()
@@ -91,7 +91,7 @@ def load_memories():
             if d.get('category_id') in negative_memory:
                 negative_memory[d.get('category_id')].append(d.get('text'))
     except Exception as e:
-        print(f"⚠️ Memory Load Error: {e}")
+        print(f"Memory Load Error: {e}")
 
 
 load_memories()
@@ -149,7 +149,7 @@ async def analyze_prompt(request: AnalysisRequest):
     try:
         dynamic_questions = generate_questions_with_gemini(GEMINI_API_KEY, best_category, user_text)
     except Exception as e:
-        print(f"⚠️ Dynamic Generation Failed, using fallback: {e}")
+        print(f"Dynamic Generation Failed, using fallback: {e}")
         dynamic_questions = get_questions_for_category(best_category, user_text)
 
     return {
@@ -166,7 +166,7 @@ async def generate_questions_endpoint(request: QuestionGenRequest):
         questions = generate_questions_with_gemini(GEMINI_API_KEY, request.category_id, request.text)
         return {"questions": questions}
     except Exception as e:
-        print(f"⚠️ Dynamic Generation Failed (Endpoint), using fallback: {e}")
+        print(f"Dynamic Generation Failed (Endpoint), using fallback: {e}")
         # Global fallback logic if specific category logic fails or just raw text
         questions = get_questions_for_category(request.category_id, request.text)
         return {"questions": questions}

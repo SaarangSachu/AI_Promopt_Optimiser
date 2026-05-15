@@ -15,7 +15,7 @@ const StarBackground = ({ theme }) => {
         canvas.height = height;
 
         const stars = [];
-        const numStars = 150;
+        const numStars = 500;
         const mouse = { x: null, y: null, active: false };
 
         // Star Class

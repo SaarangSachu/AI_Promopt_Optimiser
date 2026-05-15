@@ -89,7 +89,7 @@ const AuthScreen = ({ onLogin }) => {
             <FileText className="w-8 h-8 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
           </motion.div>
 
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2 drop-shadow-[0_0_10px_rgba(6,182,212,0.2)]">PromptMinds</h1>
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2 drop-shadow-[0_0_10px_rgba(6,182,212,0.2)]">Prompt Craft AI</h1>
           <p className="text-slate-400 mb-8 text-sm tracking-wide">Unlock the power of AI prompts</p>
 
           <div className="flex mb-8 p-1 bg-slate-800/50 rounded-lg border border-slate-700/50 relative">
@@ -170,7 +170,7 @@ const InputScreen = ({ onSubmit, username, onLogout, isAnalyzing, onToggleHistor
   return (
     <div className="min-h-screen flex flex-col relative z-10">
       <header className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-md shadow-sm border-b border-slate-200 dark:border-slate-700/50 p-4 flex justify-between items-center z-10 transition-colors duration-500">
-        <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-bold text-xl drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]"><FileText className="w-6 h-6" /> PromptMinds</div>
+        <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-bold text-xl drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]"><FileText className="w-6 h-6" /> Prompt Craft AI</div>
         <div className="flex items-center gap-3">
           <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition text-slate-600 dark:text-slate-400">
             {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-blue-600" />}

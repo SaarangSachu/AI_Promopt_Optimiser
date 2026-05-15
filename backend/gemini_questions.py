@@ -40,7 +40,7 @@ def generate_questions_with_gemini(api_key, category, user_text):
         
         # Cleanup if Gemini returns markdown code blocks
         if content.startswith("```"):
-            content = content.replace("```json", "").replace("```", "")
+            content = content.replace("```json", "").replace("```", "").strip()
         
         questions = json.loads(content)
         
